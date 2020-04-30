@@ -1,0 +1,5 @@
+rootProject.name='GitAndHub'
+include ':app'
+include ':data'
+include ':remote'
+include ':cache'
