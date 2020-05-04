@@ -72,6 +72,29 @@ class GithubCacheImpl constructor(
         return currentTime - lastUpdateTime > EXPIRATION_TIME
     }
 
+    override fun saveRepo(repo: GithubRepo): Completable {
+        return Completable.defer {
+            githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(repo))
+            githubReposDatabase.cachedOwnerRepoDao()
+                .insertOwner(entityOwnerMapper.mapToCached(repo.owner!!))
+            Completable.complete()
+        }
+    }
+
+    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
+        return Flowable.defer {
+            Flowable.just(githubReposDatabase.cachedGithubRepoDao().getFavouriteRepos(true))
+        }.map {
+            it.map { cachedItem ->
+                val cachedRepo = entityMapper.mapFromCached(cachedItem)
+                cachedRepo.owner = entityOwnerMapper.mapFromCached(
+                    githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
+                )
+                cachedRepo
+            }
+        }
+    }
+
     private fun getLastCacheUpdateTimeMillis(): Long {
         return preferencesHelper.lastCacheTime
     }

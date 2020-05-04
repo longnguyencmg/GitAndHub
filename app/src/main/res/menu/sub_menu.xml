@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.browse.BrowseActivity">
+    <item
+        android:id="@+id/add_favourite"
+        android:orderInCategory="100"
+        android:title="Add Favourite"
+        app:showAsAction="never"></item>
+</menu>

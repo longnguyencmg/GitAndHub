@@ -18,7 +18,8 @@ open class RepoEntityMapper : EntityMapper<CachedGithubRepo, GithubRepo> {
             type.forksCount,
             type.watchersCount,
             type.openIssuesCount,
-            type.updatedAt
+            type.updatedAt,
+            type.isFavourite
         )
     }
 
@@ -36,7 +37,8 @@ open class RepoEntityMapper : EntityMapper<CachedGithubRepo, GithubRepo> {
             type.watchersCount,
             type.openIssuesCount,
             type.updatedAt,
-            null
+            null,
+            type.isFavourite
         )
     }
 

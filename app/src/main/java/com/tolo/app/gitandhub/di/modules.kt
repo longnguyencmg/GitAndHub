@@ -15,13 +15,17 @@ import com.tolo.app.data.source.GithubDataStore
 import com.tolo.app.data.source.GithubDataStoreFactory
 import com.tolo.app.data.source.PullRequestDataStore
 import com.tolo.app.data.source.PullRequestDataStoreFactory
+import com.tolo.app.data.usecase.GetFavouriteRepos
 import com.tolo.app.data.usecase.GetPullRequests
 import com.tolo.app.data.usecase.GetRepos
+import com.tolo.app.data.usecase.UpdateRepoWithFavourite
 import com.tolo.app.gitandhub.UiThread
 import com.tolo.app.gitandhub.ui.browse.BrowseAdapter
 import com.tolo.app.gitandhub.ui.browse.BrowseGithubRepoViewModel
 import com.tolo.app.gitandhub.ui.detail.DetailAdapter
 import com.tolo.app.gitandhub.ui.detail.DetailGithubRepoViewModel
+import com.tolo.app.gitandhub.ui.favourite.FavouriteAdapter
+import com.tolo.app.gitandhub.ui.favourite.FavouriteViewModel
 import com.tolo.app.remote.GithubRemoteImpl
 import com.tolo.app.remote.PullRequestRemoteImpl
 import com.tolo.app.remote.ServiceFactory
@@ -67,5 +71,9 @@ val uiModule = module(override = true) {
     viewModel { BrowseGithubRepoViewModel(get()) }
     factory { DetailAdapter() }
     factory { GetPullRequests(get(), get(), get()) }
-    viewModel { DetailGithubRepoViewModel(get()) }
+    factory { UpdateRepoWithFavourite(get(), get(), get()) }
+    viewModel { DetailGithubRepoViewModel(get(), get()) }
+    factory { FavouriteAdapter() }
+    factory { GetFavouriteRepos(get(), get(), get()) }
+    viewModel { FavouriteViewModel(get()) }
 }

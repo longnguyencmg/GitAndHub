@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.tolo.app.gitandhub.ui.detail.DetailActivity" />
+        <activity android:name=".ui.favourite.FavoriteActivity" />
     </application>
 
 </manifest>

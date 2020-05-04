@@ -14,5 +14,6 @@ data class GithubRepo(
     val watchersCount: Int?,
     val openIssuesCount: Int?,
     val updatedAt: String?,
-    var owner: GithubOwner?
+    var owner: GithubOwner?,
+    var isFavourite: Boolean
 ) : Serializable

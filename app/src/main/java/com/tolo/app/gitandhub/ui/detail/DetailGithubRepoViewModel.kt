@@ -3,13 +3,19 @@ package com.tolo.app.gitandhub.ui.detail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.usecase.GetPullRequests
+import com.tolo.app.data.usecase.UpdateRepoWithFavourite
 import io.reactivex.disposables.Disposable
 
-class DetailGithubRepoViewModel(private val getPullRequests: GetPullRequests) : ViewModel() {
+class DetailGithubRepoViewModel(
+    private val getPullRequests: GetPullRequests,
+    private val updateFavourites: UpdateRepoWithFavourite
+) : ViewModel() {
 
     private val reposLiveData: MutableLiveData<DetailState> = MutableLiveData()
     private var disposable: Disposable? = null
+    private val updateFavorite: MutableLiveData<Boolean> = MutableLiveData()
 
     override fun onCleared() {
         disposable?.dispose()
@@ -20,6 +26,10 @@ class DetailGithubRepoViewModel(private val getPullRequests: GetPullRequests) : 
         return reposLiveData
     }
 
+    fun getUpdateFavourite(): LiveData<Boolean> {
+        return updateFavorite
+    }
+
     fun fetchPullRequests(owner: String, repo: String) {
         reposLiveData.postValue(DetailState.Loading)
         disposable = getPullRequests.execute(GetPullRequests.Params(owner, repo))
@@ -27,6 +37,15 @@ class DetailGithubRepoViewModel(private val getPullRequests: GetPullRequests) : 
                 reposLiveData.postValue(DetailState.Success(it))
             }, {
                 reposLiveData.postValue(DetailState.Error(it.message))
+            })
+    }
+
+    fun saveToFavourite(repo: GithubRepo) {
+        disposable = updateFavourites.execute(UpdateRepoWithFavourite.Params(repo))
+            .subscribe({
+                updateFavorite.postValue(true)
+            }, {
+                updateFavorite.postValue(false)
             })
     }
 }

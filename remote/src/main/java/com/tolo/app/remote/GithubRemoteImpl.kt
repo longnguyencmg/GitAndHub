@@ -42,4 +42,12 @@ class GithubRemoteImpl constructor(
     override fun isExpired(): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun saveRepo(repo: GithubRepo): Completable {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

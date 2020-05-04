@@ -1,16 +1,16 @@
-package com.tolo.app.gitandhub.ui.browse
+package com.tolo.app.gitandhub.ui.favourite
 
 import android.arch.lifecycle.Observer
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.gitandhub.R
 import com.tolo.app.gitandhub.ui.detail.DetailActivity
-import com.tolo.app.gitandhub.ui.favourite.FavoriteActivity
 import com.tolo.app.gitandhub.ui.widget.empty.EmptyListener
 import com.tolo.app.gitandhub.ui.widget.error.ErrorListener
 import kotlinx.android.synthetic.main.activity_browse.*
@@ -21,11 +21,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
-class BrowseActivity : AppCompatActivity() {
+class FavoriteActivity : AppCompatActivity() {
 
-    private val browseAdapter: BrowseAdapter by inject()
+    private val browseAdapter: FavouriteAdapter by inject()
 
-    private val viewModel: BrowseGithubRepoViewModel by viewModel()
+    private val viewModel: FavouriteViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class BrowseActivity : AppCompatActivity() {
         setupViewListeners()
 
         viewModel.getRepos().observe(this,
-            Observer<BrowseState> {
+            Observer<FavouriteState> {
                 if (it != null) this.handleDataState(it)
             })
         viewModel.fetchRepos()
@@ -48,26 +48,16 @@ class BrowseActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.view_favourites -> {
-                val intent = FavoriteActivity.callingIntent(this@BrowseActivity)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun setupBrowseRecycler() {
         recycler_browse.layoutManager = LinearLayoutManager(this)
         recycler_browse.adapter = browseAdapter
     }
 
-    private fun handleDataState(browseState: BrowseState) {
+    private fun handleDataState(browseState: FavouriteState) {
         when (browseState) {
-            is BrowseState.Loading -> setupScreenForLoadingState()
-            is BrowseState.Success -> setupScreenForSuccess(browseState.data)
-            is BrowseState.Error -> setupScreenForError(browseState.errorMessage)
+            is FavouriteState.Loading -> setupScreenForLoadingState()
+            is FavouriteState.Success -> setupScreenForSuccess(browseState.data)
+            is FavouriteState.Error -> setupScreenForError(browseState.errorMessage)
         }
     }
 
@@ -94,7 +84,7 @@ class BrowseActivity : AppCompatActivity() {
         browseAdapter.notifyDataSetChanged()
         browseAdapter.itemRepoClick = {
             Timber.i(it.toString())
-            val intent = DetailActivity.callingIntent(this@BrowseActivity, it)
+            val intent = DetailActivity.callingIntent(this@FavoriteActivity, it)
             startActivity(intent)
         }
     }
@@ -120,6 +110,13 @@ class BrowseActivity : AppCompatActivity() {
     private val errorListener = object : ErrorListener {
         override fun onTryAgainClicked() {
             viewModel.fetchRepos()
+        }
+    }
+
+    companion object {
+
+        fun callingIntent(context: Context): Intent {
+            return Intent(context, FavoriteActivity::class.java)
         }
     }
 

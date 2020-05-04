@@ -18,5 +18,6 @@ data class CachedGithubRepo(
     val forksCount: Int?,
     val watchersCount: Int?,
     val openIssuesCount: Int?,
-    val updatedAt: String?
+    val updatedAt: String?,
+    val isFavourite: Boolean
 )

@@ -26,4 +26,12 @@ open class GithubDataRepository(private val factory: GithubDataStoreFactory) : G
             }
     }
 
+    override fun saveRepo(repo: GithubRepo): Completable {
+        return factory.retrieveCacheDataStore().saveRepo(repo)
+    }
+
+    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
+        return factory.retrieveCacheDataStore().getFavouriteRepos()
+    }
+
 }

@@ -9,7 +9,7 @@ import com.tolo.app.cache.dao.CachedOwnerRepoDao
 import com.tolo.app.cache.model.CachedGithubOwner
 import com.tolo.app.cache.model.CachedGithubRepo
 
-@Database(entities = [CachedGithubRepo::class, CachedGithubOwner::class], version = 2)
+@Database(entities = [CachedGithubRepo::class, CachedGithubOwner::class], version = 3)
 abstract class GithubReposDatabase : RoomDatabase() {
 
     abstract fun cachedGithubRepoDao(): CachedGithubRepoDao

@@ -12,4 +12,8 @@ interface GithubRepository {
 
     fun getRepos(): Flowable<List<GithubRepo>>
 
+    fun saveRepo(repo: GithubRepo): Completable
+
+    fun getFavouriteRepos(): Flowable<List<GithubRepo>>
+
 }

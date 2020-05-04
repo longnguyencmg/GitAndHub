@@ -18,7 +18,8 @@ open class RepoEntityMapper : EntityMapper<Repo, GithubRepo> {
             type.watchersCount,
             type.openIssuesCount,
             type.updatedAt,
-            OwnerEntityMapper(type.id).mapFromRemote(type.owner)
+            OwnerEntityMapper(type.id).mapFromRemote(type.owner),
+            false
         )
     }
 }

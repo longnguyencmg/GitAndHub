@@ -7,7 +7,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.tolo.app.data.model.GithubPullRequest
 import com.tolo.app.data.model.GithubRepo
@@ -24,6 +27,7 @@ import org.koin.android.scope.ext.android.bindScope
 import org.koin.android.scope.ext.android.getCurrentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class DetailActivity : AppCompatActivity() {
 
@@ -45,7 +49,29 @@ class DetailActivity : AppCompatActivity() {
             Observer<DetailState> {
                 if (it != null) this.handleDataState(it)
             })
+        viewModel.getUpdateFavourite().observe(this, Observer {
+            if (it!!) {
+                Toast.makeText(this, "Update Success", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+            }
+        })
         viewModel.fetchPullRequests(repo.owner!!.login, repo.name!!)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.sub_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_favourite -> {
+                viewModel.saveToFavourite(repo)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     @SuppressLint("SetTextI18n")

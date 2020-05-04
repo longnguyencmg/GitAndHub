@@ -20,4 +20,7 @@ abstract class CachedGithubRepoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertRepo(cachedRepo: CachedGithubRepo)
 
+    @Query(GithubConstants.QUERY_FAVOURITES)
+    abstract fun getFavouriteRepos(liked: Boolean): List<CachedGithubRepo>
+
 }
