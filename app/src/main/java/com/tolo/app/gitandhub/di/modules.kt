@@ -1,6 +1,6 @@
 package com.tolo.app.gitandhub.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.tolo.app.cache.GithubCacheImpl
 import com.tolo.app.cache.PreferencesHelper
 import com.tolo.app.cache.db.GithubReposDatabase
@@ -30,8 +30,9 @@ import com.tolo.app.remote.GithubRemoteImpl
 import com.tolo.app.remote.PullRequestRemoteImpl
 import com.tolo.app.remote.ServiceFactory
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
 val applicationModule = module(override = true) {
 
@@ -51,11 +52,11 @@ val applicationModule = module(override = true) {
     }
     factory { get<GithubReposDatabase>().cachedGithubRepoDao() }
 
-    factory<GithubDataStore>("remote") { GithubRemoteImpl(get(), get()) }
-    factory<GithubDataStore>("local") { GithubCacheImpl(get(), get(), get(), get()) }
-    factory<PullRequestDataStore>("remote") { PullRequestRemoteImpl(get(), get()) }
-    factory { GithubDataStoreFactory(get("local"), get("remote")) }
-    factory { PullRequestDataStoreFactory(get("remote")) }
+    factory<GithubDataStore>(named("remote")) { GithubRemoteImpl(get(), get()) }
+    factory<GithubDataStore>(named("local")) { GithubCacheImpl(get(), get(), get(), get()) }
+    factory<PullRequestDataStore>(named("remote")) { PullRequestRemoteImpl(get(), get()) }
+    factory { GithubDataStoreFactory(get(named("local")), get(named("remote"))) }
+    factory { PullRequestDataStoreFactory(get(named("remote"))) }
 
     factory { com.tolo.app.cache.mapper.RepoEntityMapper() }
     factory { com.tolo.app.cache.mapper.OwnerEntityMapper() }

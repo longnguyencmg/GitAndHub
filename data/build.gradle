@@ -10,6 +10,8 @@ dependencies {
     implementation dataDependencies.kotlin
     implementation dataDependencies.rxKotlin
     implementation dataDependencies.rxAndroid
+    implementation dataDependencies.rxJava
+    implementation dataDependencies.coroutines
 
     testImplementation dataTestDependencies.junit
     testImplementation dataTestDependencies.kotlinJUnit

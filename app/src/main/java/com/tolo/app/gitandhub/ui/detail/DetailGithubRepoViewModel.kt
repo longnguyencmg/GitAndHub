@@ -1,8 +1,8 @@
 package com.tolo.app.gitandhub.ui.detail
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.usecase.GetPullRequests
 import com.tolo.app.data.usecase.UpdateRepoWithFavourite

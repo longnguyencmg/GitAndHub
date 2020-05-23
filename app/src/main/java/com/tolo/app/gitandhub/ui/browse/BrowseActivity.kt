@@ -1,12 +1,12 @@
 package com.tolo.app.gitandhub.ui.browse
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.gitandhub.R
 import com.tolo.app.gitandhub.ui.detail.DetailActivity
@@ -15,9 +15,7 @@ import com.tolo.app.gitandhub.ui.widget.empty.EmptyListener
 import com.tolo.app.gitandhub.ui.widget.error.ErrorListener
 import kotlinx.android.synthetic.main.activity_browse.*
 import org.koin.android.ext.android.inject
-import org.koin.android.scope.ext.android.bindScope
-import org.koin.android.scope.ext.android.getCurrentScope
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
@@ -30,7 +28,6 @@ class BrowseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
-        bindScope(getCurrentScope())
 
         setupBrowseRecycler()
         setupViewListeners()

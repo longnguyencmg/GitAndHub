@@ -1,7 +1,7 @@
 package com.tolo.app.cache.model
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.tolo.app.cache.db.constants.OwnerConstants
 
 @Entity(tableName = OwnerConstants.TABLE_NAME)

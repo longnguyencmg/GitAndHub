@@ -1,10 +1,9 @@
 package com.tolo.app.cache.dao
 
-
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.tolo.app.cache.db.constants.GithubConstants
 import com.tolo.app.cache.model.CachedGithubRepo
 

@@ -1,16 +1,16 @@
 package com.tolo.app.gitandhub.ui.detail
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.tolo.app.data.model.GithubPullRequest
 import com.tolo.app.data.model.GithubRepo
@@ -23,9 +23,7 @@ import kotlinx.android.synthetic.main.activity_browse.view_empty
 import kotlinx.android.synthetic.main.activity_browse.view_error
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.koin.android.ext.android.inject
-import org.koin.android.scope.ext.android.bindScope
-import org.koin.android.scope.ext.android.getCurrentScope
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
@@ -39,7 +37,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         repo = intent.getSerializableExtra(REPO) as GithubRepo
-        bindScope(getCurrentScope())
 
         setupDetailView()
         setupBrowseRecycler()

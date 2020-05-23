@@ -10,26 +10,31 @@ ext {
     androidTargetSdkVersion = 29
     androidCompileSdkVersion = 29
 
+    // Stable Koin Version
+    koin_version = "2.1.5"
+
     //Libraries
-    kotlinVersion = '1.2.50'
+    kotlinVersion = '1.3.72'
     butterKnifeVersion = '7.0.1'
     recyclerViewVersion = '21.0.3'
-    rxJavaVersion = '2.0.2'
+    rxJavaVersion = '2.2.8'
     rxKotlinVersion = '2.1.0'
     rxAndroidVersion = '2.0.1'
     javaxAnnotationVersion = '1.0'
     javaxInjectVersion = '1'
-    timberVersion = '4.5.1'
-    glideVersion = '4.0.0'
+    timberVersion = '4.7.1'
+    glideVersion = '4.11.0'
     koinVersion = '1.0.0-RC-1'
     glassfishAnnotationVersion = '10.0-b28'
     constraintLayoutVersion = '1.1.3'
     gsonVersion = '2.8.1'
     okHttpVersion = '3.8.1'
     androidAnnotationsVersion = '21.0.3'
-    retrofitVersion = '2.3.0'
-    roomVersion = '1.1.1'
+    retrofitVersion = '2.9.0'
+    roomVersion = '2.2.0'
     supportLibraryVersion = '28.0.0-rc02'
+    coroutinesVersion = '1.3.7'
+    lifecycleVersion = '2.2.0'
 
     //Testing
     robolectricVersion = '3.4.2'
@@ -64,14 +69,15 @@ ext {
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
             retrofit:           "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter:  "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
             retrofitAdapter:    "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
-            archRuntime:        "android.arch.lifecycle:runtime:${roomVersion}",
-            archViewModel:      "android.arch.lifecycle:viewmodel:${roomVersion}",
-            archExtensions:     "android.arch.lifecycle:extensions:${roomVersion}",
-            archCompiler:       "android.arch.lifecycle:compiler:${roomVersion}",
+            archRuntime:        "androidx.lifecycle:runtime:${lifecycleVersion}",
+            archViewModel:      "androidx.lifecycle:viewmodel:${lifecycleVersion}",
+            archExtensions:     "androidx.lifecycle:lifecycle-extensions:${lifecycleVersion}",
+            archCompiler:       "androidx.lifecycle:compiler:${lifecycleVersion}",
     ]
 
     presentationTestDependencies = [
@@ -87,12 +93,14 @@ ext {
             okHttpLogger:       "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
             gson:               "com.google.code.gson:gson:${gsonVersion}",
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
-            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
             retrofit:           "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter:  "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            retrofitAdapter:    "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+            retrofitAdapter:    "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+            coroutines:         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
     ]
 
     dataTestDependencies = [
@@ -106,11 +114,14 @@ ext {
     cacheDependencies = [
             gson:               "com.google.code.gson:gson:${gsonVersion}",
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
-            roomRuntime:        "android.arch.persistence.room:runtime:${roomVersion}",
-            roomCompiler:       "android.arch.persistence.room:compiler:${roomVersion}",
-            roomRxJava:         "android.arch.persistence.room:rxjava2:${roomVersion}"
+            roomRuntime:        "androidx.room:room-runtime:${roomVersion}",
+            roomCompiler:       "androidx.room:room-compiler:${roomVersion}",
+            roomRxJava:         "androidx.room:room-rxjava2:${roomVersion}",
+            coroutines:         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
     ]
 
     cacheTestDependencies = [
@@ -119,8 +130,8 @@ ext {
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
-            roomTesting:        "android.arch.persistence.room:testing:${roomVersion}",
-            archTesting:        "android.arch.core:core-testing:${roomVersion}",
+            roomTesting:        "androidx.room:room-testing:${roomVersion}",
+            archTesting:        "androidx.arch.core:core-testing:2.1.0",
             supportRunner:      "com.android.support.test:runner:${androidSupportRunnerVersion}",
             supportRules:       "com.android.support.test:rules:${androidSupportRulesVersion}"
     ]
@@ -129,12 +140,15 @@ ext {
             gson:               "com.google.code.gson:gson:${gsonVersion}",
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
             okHttp:             "com.squareup.okhttp3:okhttp:${okHttpVersion}",
             okHttpLogger:       "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
             retrofit:           "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter:  "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            retrofitAdapter:    "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+            retrofitAdapter:    "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+            coroutines:         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
     ]
 
     remoteTestDependencies = [
@@ -147,10 +161,13 @@ ext {
     ]
 
     appDependencies = [
-            koin:               "org.koin:koin-android:${koinVersion}",
-            koinArch:           "org.koin:koin-android-viewmodel:${koinVersion}",
+            koin:               "org.koin:koin-android:${koin_version}",
+            koinArch :          "org.koin:koin-androidx-scope:${koin_version}",
+            koinViewModel:      "org.koin:koin-androidx-viewmodel:${koin_version}",
+            koinFragment:       "org.koin:koin-androidx-fragment:${koin_version}",
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             glide:              "com.github.bumptech.glide:glide:${glideVersion}",
             kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             androidAnnotations: "com.android.support:support-annotations:${supportLibraryVersion}",
@@ -161,10 +178,14 @@ ext {
             supportDesign:      "com.android.support:design:${supportLibraryVersion}",
             timber:             "com.jakewharton.timber:timber:${timberVersion}",
             glassfishAnnotation: "org.glassfish:javax.annotation:${glassfishAnnotationVersion}",
-            roomRuntime:        "android.arch.persistence.room:runtime:${roomVersion}",
-            roomCompiler:       "android.arch.persistence.room:compiler:${roomVersion}",
-            roomRxJava:         "android.arch.persistence.room:rxjava2:${roomVersion}",
-            constraintLayout:   "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
+            roomRuntime:        "androidx.room:room-runtime:${roomVersion}",
+            roomCompiler:       "androidx.room:room-compiler:${roomVersion}",
+            roomRxJava:         "androidx.room:room-rxjava2:${roomVersion}",
+            constraintLayout:   "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
+            coroutines:         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}",
+            lifecycleViewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}",
+            lifecycleLivedata:  "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}",
+            lifecycleCommon:    "androidx.lifecycle:lifecycle-common-java8:${lifecycleVersion}"
     ]
 
     appTestDependencies = [
