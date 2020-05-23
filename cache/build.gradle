@@ -57,6 +57,8 @@ dependencies {
     implementation cacheDependencies.rxJava
     implementation cacheDependencies.gson
     implementation cacheDependencies.roomRuntime
+    implementation cacheDependencies.roomRxJava
+    implementation cacheDependencies.roomKtx
     implementation cacheDependencies.coroutines
     kapt cacheDependencies.roomCompiler
 

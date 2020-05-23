@@ -11,15 +11,15 @@ import com.tolo.app.cache.model.CachedGithubRepo
 abstract class CachedGithubRepoDao {
 
     @Query(GithubConstants.QUERY_REPOS)
-    abstract fun getRepos(): List<CachedGithubRepo>
+    abstract suspend fun getRepos(): List<CachedGithubRepo>
 
     @Query(GithubConstants.DELETE_ALL_REPOS)
-    abstract fun clearRepos()
+    abstract suspend fun clearRepos()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertRepo(cachedRepo: CachedGithubRepo)
+    abstract suspend fun insertRepo(cachedRepo: CachedGithubRepo)
 
     @Query(GithubConstants.QUERY_FAVOURITES)
-    abstract fun getFavouriteRepos(liked: Boolean): List<CachedGithubRepo>
+    abstract suspend fun getFavouriteRepos(liked: Boolean): List<CachedGithubRepo>
 
 }

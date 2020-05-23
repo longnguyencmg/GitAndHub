@@ -31,7 +31,7 @@ ext {
     okHttpVersion = '3.8.1'
     androidAnnotationsVersion = '21.0.3'
     retrofitVersion = '2.9.0'
-    roomVersion = '2.2.0'
+    roomVersion = '2.2.5'
     supportLibraryVersion = '28.0.0-rc02'
     coroutinesVersion = '1.3.7'
     lifecycleVersion = '2.2.0'
@@ -121,6 +121,7 @@ ext {
             roomRuntime:        "androidx.room:room-runtime:${roomVersion}",
             roomCompiler:       "androidx.room:room-compiler:${roomVersion}",
             roomRxJava:         "androidx.room:room-rxjava2:${roomVersion}",
+            roomKtx:            "androidx.room:room-ktx:${roomVersion}",
             coroutines:         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
     ]
 
@@ -169,6 +170,7 @@ ext {
             rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             rxJava:             "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             glide:              "com.github.bumptech.glide:glide:${glideVersion}",
+            glideCompiler:      "com.github.bumptech.glide:compiler:${glideVersion}",
             kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             androidAnnotations: "com.android.support:support-annotations:${supportLibraryVersion}",
             androidSupportV4:   "com.android.support:support-v4:${supportLibraryVersion}",

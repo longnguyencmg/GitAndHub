@@ -3,10 +3,11 @@ package com.tolo.app.gitandhub.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.usecase.GetPullRequests
 import com.tolo.app.data.usecase.UpdateRepoWithFavourite
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.launch
 
 class DetailGithubRepoViewModel(
     private val getPullRequests: GetPullRequests,
@@ -14,13 +15,7 @@ class DetailGithubRepoViewModel(
 ) : ViewModel() {
 
     private val reposLiveData: MutableLiveData<DetailState> = MutableLiveData()
-    private var disposable: Disposable? = null
     private val updateFavorite: MutableLiveData<Boolean> = MutableLiveData()
-
-    override fun onCleared() {
-        disposable?.dispose()
-        super.onCleared()
-    }
 
     fun getPullRequests(): LiveData<DetailState> {
         return reposLiveData
@@ -32,20 +27,24 @@ class DetailGithubRepoViewModel(
 
     fun fetchPullRequests(owner: String, repo: String) {
         reposLiveData.postValue(DetailState.Loading)
-        disposable = getPullRequests.execute(GetPullRequests.Params(owner, repo))
-            .subscribe({
-                reposLiveData.postValue(DetailState.Success(it))
-            }, {
-                reposLiveData.postValue(DetailState.Error(it.message))
-            })
+        viewModelScope.launch {
+            try {
+                val list = getPullRequests.getPullRequests(owner, repo)
+                reposLiveData.postValue(DetailState.Success(list))
+            } catch (exception: Exception) {
+                reposLiveData.postValue(DetailState.Error(exception.message))
+            }
+        }
     }
 
     fun saveToFavourite(repo: GithubRepo) {
-        disposable = updateFavourites.execute(UpdateRepoWithFavourite.Params(repo))
-            .subscribe({
+        viewModelScope.launch {
+            try {
+                updateFavourites.updateFavourite(repo)
                 updateFavorite.postValue(true)
-            }, {
+            } catch (exception: Exception) {
                 updateFavorite.postValue(false)
-            })
+            }
+        }
     }
 }

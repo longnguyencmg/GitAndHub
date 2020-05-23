@@ -12,12 +12,12 @@ import com.tolo.app.cache.model.CachedGithubOwner
 abstract class CachedOwnerRepoDao {
 
     @Query(OwnerConstants.QUERY_OWNER)
-    abstract fun getOwner(repo_id: Int): CachedGithubOwner
+    abstract suspend fun getOwner(repo_id: Int): CachedGithubOwner
 
     @Query(OwnerConstants.DELETE_ALL_OWNER)
-    abstract fun clearOwners()
+    abstract suspend fun clearOwners()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertOwner(cachedRepo: CachedGithubOwner)
+    abstract suspend fun insertOwner(cachedRepo: CachedGithubOwner)
 
 }

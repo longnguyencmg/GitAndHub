@@ -3,34 +3,30 @@ package com.tolo.app.data
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.repository.GithubRepository
 import com.tolo.app.data.source.GithubDataStoreFactory
-import io.reactivex.Completable
-import io.reactivex.Flowable
 
 open class GithubDataRepository(private val factory: GithubDataStoreFactory) : GithubRepository {
 
-    override fun clearRepos(): Completable {
+    override suspend fun clearRepos() {
         return factory.retrieveCacheDataStore().clearRepos()
     }
 
-    override fun saveRepos(repos: List<GithubRepo>): Completable {
+    override suspend fun saveRepos(repos: List<GithubRepo>) {
         return factory.retrieveCacheDataStore().saveRepos(repos)
     }
 
-    override fun getRepos(): Flowable<List<GithubRepo>> {
-        return factory.retrieveCacheDataStore().isCached()
-            .flatMapPublisher { isCached ->
-                factory.retrieveDataStore(isCached).getRepos()
-            }
-            .flatMap { repos ->
-                saveRepos(repos).toSingle { repos }.toFlowable()
-            }
+    override suspend fun getRepos(): List<GithubRepo> {
+        val isCached = factory.retrieveCacheDataStore().isCached()
+        val list = factory.retrieveDataStore(isCached).getRepos()
+        saveRepos(list)
+
+        return list
     }
 
-    override fun saveRepo(repo: GithubRepo): Completable {
+    override suspend fun saveRepo(repo: GithubRepo) {
         return factory.retrieveCacheDataStore().saveRepo(repo)
     }
 
-    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
+    override suspend fun getFavouriteRepos(): List<GithubRepo> {
         return factory.retrieveCacheDataStore().getFavouriteRepos()
     }
 

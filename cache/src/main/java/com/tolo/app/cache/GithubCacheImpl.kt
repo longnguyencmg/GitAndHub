@@ -5,9 +5,6 @@ import com.tolo.app.cache.mapper.OwnerEntityMapper
 import com.tolo.app.cache.mapper.RepoEntityMapper
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.source.GithubDataStore
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 
 class GithubCacheImpl constructor(
@@ -23,46 +20,35 @@ class GithubCacheImpl constructor(
         return githubReposDatabase
     }
 
-    override fun clearRepos(): Completable {
-        return Completable.defer {
-            githubReposDatabase.cachedGithubRepoDao().clearRepos()
-            Completable.complete()
+    override suspend fun clearRepos() {
+        githubReposDatabase.cachedGithubRepoDao().clearRepos()
+    }
+
+    override suspend fun saveRepos(repos: List<GithubRepo>) {
+        repos.forEach {
+            //save both repos and owner
+            githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(it))
+            githubReposDatabase.cachedOwnerRepoDao()
+                .insertOwner(entityOwnerMapper.mapToCached(it.owner!!))
         }
     }
 
-    override fun saveRepos(repos: List<GithubRepo>): Completable {
-        return Completable.defer {
-            repos.forEach {
-                //save both repos and owner
-                githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(it))
-                githubReposDatabase.cachedOwnerRepoDao()
-                    .insertOwner(entityOwnerMapper.mapToCached(it.owner!!))
-            }
-            Completable.complete()
+    override suspend fun getRepos(): List<GithubRepo> {
+        val list = githubReposDatabase.cachedGithubRepoDao().getRepos()
+        return list.map { cachedItem ->
+            val cachedRepo = entityMapper.mapFromCached(cachedItem)
+            cachedRepo.owner = entityOwnerMapper.mapFromCached(
+                githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
+            )
+            cachedRepo
         }
     }
 
-    override fun getRepos(): Flowable<List<GithubRepo>> {
-        return Flowable.defer {
-            Flowable.just(githubReposDatabase.cachedGithubRepoDao().getRepos())
-        }.map {
-            it.map { cachedItem ->
-                val cachedRepo = entityMapper.mapFromCached(cachedItem)
-                cachedRepo.owner = entityOwnerMapper.mapFromCached(
-                    githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
-                )
-                cachedRepo
-            }
-        }
+    override suspend fun isCached(): Boolean {
+        return githubReposDatabase.cachedGithubRepoDao().getRepos().isNotEmpty()
     }
 
-    override fun isCached(): Single<Boolean> {
-        return Single.defer {
-            Single.just(githubReposDatabase.cachedGithubRepoDao().getRepos().isNotEmpty())
-        }
-    }
-
-    override fun setLastCacheTime(lastCache: Long) {
+    override suspend fun setLastCacheTime(lastCache: Long) {
         preferencesHelper.lastCacheTime = lastCache
     }
 
@@ -72,26 +58,20 @@ class GithubCacheImpl constructor(
         return currentTime - lastUpdateTime > EXPIRATION_TIME
     }
 
-    override fun saveRepo(repo: GithubRepo): Completable {
-        return Completable.defer {
-            githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(repo))
-            githubReposDatabase.cachedOwnerRepoDao()
-                .insertOwner(entityOwnerMapper.mapToCached(repo.owner!!))
-            Completable.complete()
-        }
+    override suspend fun saveRepo(repo: GithubRepo) {
+        githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(repo))
+        githubReposDatabase.cachedOwnerRepoDao()
+            .insertOwner(entityOwnerMapper.mapToCached(repo.owner!!))
     }
 
-    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
-        return Flowable.defer {
-            Flowable.just(githubReposDatabase.cachedGithubRepoDao().getFavouriteRepos(true))
-        }.map {
-            it.map { cachedItem ->
-                val cachedRepo = entityMapper.mapFromCached(cachedItem)
-                cachedRepo.owner = entityOwnerMapper.mapFromCached(
-                    githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
-                )
-                cachedRepo
-            }
+    override suspend fun getFavouriteRepos(): List<GithubRepo> {
+        val list = githubReposDatabase.cachedGithubRepoDao().getFavouriteRepos(true)
+        return list.map { cachedItem ->
+            val cachedRepo = entityMapper.mapFromCached(cachedItem)
+            cachedRepo.owner = entityOwnerMapper.mapFromCached(
+                githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
+            )
+            cachedRepo
         }
     }
 

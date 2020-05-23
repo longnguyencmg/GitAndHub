@@ -3,9 +3,6 @@ package com.tolo.app.remote
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.source.GithubDataStore
 import com.tolo.app.remote.mapper.RepoEntityMapper
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 
 class GithubRemoteImpl constructor(
@@ -14,28 +11,27 @@ class GithubRemoteImpl constructor(
 ) : GithubDataStore {
 
 
-    override fun getRepos(): Flowable<List<GithubRepo>> {
-        return githubAPI.getTopRepos(1)
-            .map {
-                val entities = mutableListOf<GithubRepo>()
-                it.items.forEach { repo -> entities.add(entityMapper.mapFromRemote(repo)) }
-                entities
-            }
+    override suspend fun getRepos(): List<GithubRepo> {
+        val response = githubAPI.getTopRepos(1)
+        val entities = mutableListOf<GithubRepo>()
+        response.items.forEach { repo -> entities.add(entityMapper.mapFromRemote(repo)) }
+
+        return entities
     }
 
-    override fun clearRepos(): Completable {
+    override suspend fun clearRepos() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun saveRepos(repos: List<GithubRepo>): Completable {
+    override suspend fun saveRepos(repos: List<GithubRepo>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun isCached(): Single<Boolean> {
+    override suspend fun isCached(): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setLastCacheTime(lastCache: Long) {
+    override suspend fun setLastCacheTime(lastCache: Long) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -43,11 +39,11 @@ class GithubRemoteImpl constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun saveRepo(repo: GithubRepo): Completable {
+    override suspend fun saveRepo(repo: GithubRepo) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getFavouriteRepos(): Flowable<List<GithubRepo>> {
+    override suspend fun getFavouriteRepos(): List<GithubRepo> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

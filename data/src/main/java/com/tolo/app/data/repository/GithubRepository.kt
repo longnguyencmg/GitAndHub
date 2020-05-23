@@ -1,19 +1,17 @@
 package com.tolo.app.data.repository
 
 import com.tolo.app.data.model.GithubRepo
-import io.reactivex.Completable
-import io.reactivex.Flowable
 
 interface GithubRepository {
 
-    fun clearRepos(): Completable
+    suspend fun clearRepos()
 
-    fun saveRepos(repos: List<GithubRepo>): Completable
+    suspend fun saveRepos(repos: List<GithubRepo>)
 
-    fun getRepos(): Flowable<List<GithubRepo>>
+    suspend fun getRepos(): List<GithubRepo>
 
-    fun saveRepo(repo: GithubRepo): Completable
+    suspend fun saveRepo(repo: GithubRepo)
 
-    fun getFavouriteRepos(): Flowable<List<GithubRepo>>
+    suspend fun getFavouriteRepos(): List<GithubRepo>
 
 }

@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tolo.app.data.model.GithubRepo
+import com.tolo.app.gitandhub.GlideApp
 import com.tolo.app.gitandhub.R
 
 class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.ViewHolder>() {
@@ -19,7 +19,7 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.ViewHolder>() {
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = repos[position]
-        Glide.with(holder.avatar.context).load(repo.owner?.avatarUrl).into(holder.avatar)
+        GlideApp.with(holder.avatar.context).load(repo.owner?.avatarUrl).into(holder.avatar)
         holder.name.text = repo.name
         holder.subName.text = repo.language
         holder.stars.text = repo.stargazersCount.toString()

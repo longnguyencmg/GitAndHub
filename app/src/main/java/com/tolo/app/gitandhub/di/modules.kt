@@ -68,13 +68,13 @@ val applicationModule = module(override = true) {
 
 val uiModule = module(override = true) {
     factory { BrowseAdapter() }
-    factory { GetRepos(get(), get(), get()) }
+    factory { GetRepos(get()) }
     viewModel { BrowseGithubRepoViewModel(get()) }
     factory { DetailAdapter() }
-    factory { GetPullRequests(get(), get(), get()) }
-    factory { UpdateRepoWithFavourite(get(), get(), get()) }
+    factory { GetPullRequests(get()) }
+    factory { UpdateRepoWithFavourite(get()) }
     viewModel { DetailGithubRepoViewModel(get(), get()) }
     factory { FavouriteAdapter() }
-    factory { GetFavouriteRepos(get(), get(), get()) }
+    factory { GetFavouriteRepos(get()) }
     viewModel { FavouriteViewModel(get()) }
 }

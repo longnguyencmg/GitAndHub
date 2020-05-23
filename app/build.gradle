@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
@@ -59,6 +60,7 @@ dependencies {
     implementation appDependencies.rxAndroid
     implementation appDependencies.rxJava
     implementation appDependencies.glide
+    kapt appDependencies.glideCompiler
     implementation appDependencies.koin
     implementation appDependencies.koinArch
     implementation appDependencies.koinViewModel

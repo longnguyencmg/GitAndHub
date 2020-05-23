@@ -1,27 +1,24 @@
 package com.tolo.app.data.source
 
 import com.tolo.app.data.model.GithubRepo
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 
 interface GithubDataStore {
 
-    fun clearRepos(): Completable
+    suspend fun clearRepos()
 
-    fun saveRepos(repos: List<GithubRepo>): Completable
+    suspend fun saveRepos(repos: List<GithubRepo>)
 
-    fun getRepos(): Flowable<List<GithubRepo>>
+    suspend fun getRepos(): List<GithubRepo>
 
-    fun isCached(): Single<Boolean>
+    suspend fun isCached(): Boolean
 
-    fun setLastCacheTime(lastCache: Long)
+    suspend fun setLastCacheTime(lastCache: Long)
 
     fun isExpired(): Boolean
 
-    fun saveRepo(repo: GithubRepo): Completable
+    suspend fun saveRepo(repo: GithubRepo)
 
-    fun getFavouriteRepos(): Flowable<List<GithubRepo>>
+    suspend fun getFavouriteRepos(): List<GithubRepo>
 
 }
