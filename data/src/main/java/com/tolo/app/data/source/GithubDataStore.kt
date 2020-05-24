@@ -21,4 +21,6 @@ interface GithubDataStore {
 
     suspend fun getFavouriteRepos(): List<GithubRepo>
 
+    suspend fun updateRepo(isFavourite: Boolean, id: Int)
+
 }

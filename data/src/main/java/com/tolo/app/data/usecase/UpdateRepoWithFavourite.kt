@@ -8,6 +8,6 @@ open class UpdateRepoWithFavourite(
 ) {
     suspend fun updateFavourite(repo: GithubRepo) {
         repo.isFavourite = true
-        return githubRepository.saveRepo(repo)
+        return githubRepository.updateRepo(true, repo.id)
     }
 }

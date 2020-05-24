@@ -1,8 +1,10 @@
 package com.tolo.app.cache
 
+import android.util.Log
 import com.tolo.app.cache.db.GithubReposDatabase
 import com.tolo.app.cache.mapper.OwnerEntityMapper
 import com.tolo.app.cache.mapper.RepoEntityMapper
+import com.tolo.app.cache.model.CachedGithubRepo
 import com.tolo.app.data.model.GithubRepo
 import com.tolo.app.data.source.GithubDataStore
 
@@ -28,24 +30,38 @@ class GithubCacheImpl constructor(
         repos.forEach {
             //save both repos and owner
             githubReposDatabase.cachedGithubRepoDao().insertRepo(entityMapper.mapToCached(it))
-            githubReposDatabase.cachedOwnerRepoDao()
-                .insertOwner(entityOwnerMapper.mapToCached(it.owner!!))
+            if (it.owner != null) {
+                githubReposDatabase.cachedOwnerRepoDao()
+                    .insertOwner(entityOwnerMapper.mapToCached(it.owner!!))
+            }
         }
     }
 
     override suspend fun getRepos(): List<GithubRepo> {
-        val list = githubReposDatabase.cachedGithubRepoDao().getRepos()
-        return list.map { cachedItem ->
-            val cachedRepo = entityMapper.mapFromCached(cachedItem)
-            cachedRepo.owner = entityOwnerMapper.mapFromCached(
+        var list = githubReposDatabase.cachedGithubRepoDao().getRepositories()
+        list = list.sortedByDescending { it.stargazersCount }
+        return handleDataMapping(list)
+    }
+
+    private suspend fun handleDataMapping(list: List<CachedGithubRepo>): List<GithubRepo> {
+        val result = mutableListOf<GithubRepo>()
+        list.forEach { cachedItem ->
+            val dataRepo = entityMapper.mapFromCached(cachedItem)
+            Log.e("Github Cache Impl", "from cachedId - ${cachedItem.id}")
+            dataRepo.owner = entityOwnerMapper.mapFromCached(
                 githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
             )
-            cachedRepo
+            result.add(dataRepo)
+            Log.e(
+                "Github Cache Impl",
+                "Github Cache Impl - Add repo - ${dataRepo.owner?.login} from cachedId - ${cachedItem.id}"
+            )
         }
+        return result
     }
 
     override suspend fun isCached(): Boolean {
-        return githubReposDatabase.cachedGithubRepoDao().getRepos().isNotEmpty()
+        return githubReposDatabase.cachedGithubRepoDao().getRepositories().isNotEmpty()
     }
 
     override suspend fun setLastCacheTime(lastCache: Long) {
@@ -65,14 +81,12 @@ class GithubCacheImpl constructor(
     }
 
     override suspend fun getFavouriteRepos(): List<GithubRepo> {
-        val list = githubReposDatabase.cachedGithubRepoDao().getFavouriteRepos(true)
-        return list.map { cachedItem ->
-            val cachedRepo = entityMapper.mapFromCached(cachedItem)
-            cachedRepo.owner = entityOwnerMapper.mapFromCached(
-                githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
-            )
-            cachedRepo
-        }
+        val list = githubReposDatabase.cachedGithubRepoDao().getFavouriteRepositories(true)
+        return handleDataMapping(list)
+    }
+
+    override suspend fun updateRepo(isFavourite: Boolean, id: Int) {
+        githubReposDatabase.cachedGithubRepoDao().updateRepo(liked = isFavourite, repo_id = id)
     }
 
     private fun getLastCacheUpdateTimeMillis(): Long {

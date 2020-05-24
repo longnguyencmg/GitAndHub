@@ -11,6 +11,7 @@ open class GithubDataRepository(private val factory: GithubDataStoreFactory) : G
     }
 
     override suspend fun saveRepos(repos: List<GithubRepo>) {
+        factory.retrieveCacheDataStore().setLastCacheTime(System.currentTimeMillis())
         return factory.retrieveCacheDataStore().saveRepos(repos)
     }
 
@@ -28,6 +29,10 @@ open class GithubDataRepository(private val factory: GithubDataStoreFactory) : G
 
     override suspend fun getFavouriteRepos(): List<GithubRepo> {
         return factory.retrieveCacheDataStore().getFavouriteRepos()
+    }
+
+    override suspend fun updateRepo(isFavourite: Boolean, id: Int) {
+        return factory.retrieveCacheDataStore().updateRepo(isFavourite, id)
     }
 
 }

@@ -11,4 +11,8 @@ object GithubConstants {
 
     const val QUERY_FAVOURITES = "SELECT * FROM $TABLE_NAME WHERE isFavourite =:liked"
 
+    const val COLUMN_ID = "id"
+
+    const val UPDATE_REPO = "UPDATE $TABLE_NAME SET isFavourite =:liked WHERE $COLUMN_ID =:repo_id"
+
 }

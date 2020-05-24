@@ -46,4 +46,8 @@ class GithubRemoteImpl constructor(
     override suspend fun getFavouriteRepos(): List<GithubRepo> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override suspend fun updateRepo(isFavourite: Boolean, id: Int) {
+        TODO("Not yet implemented")
+    }
 }
