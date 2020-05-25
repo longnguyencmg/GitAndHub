@@ -1,6 +1,5 @@
 package com.tolo.app.cache
 
-import android.util.Log
 import com.tolo.app.cache.db.GithubReposDatabase
 import com.tolo.app.cache.mapper.OwnerEntityMapper
 import com.tolo.app.cache.mapper.RepoEntityMapper
@@ -47,15 +46,10 @@ class GithubCacheImpl constructor(
         val result = mutableListOf<GithubRepo>()
         list.forEach { cachedItem ->
             val dataRepo = entityMapper.mapFromCached(cachedItem)
-            Log.e("Github Cache Impl", "from cachedId - ${cachedItem.id}")
             dataRepo.owner = entityOwnerMapper.mapFromCached(
                 githubReposDatabase.cachedOwnerRepoDao().getOwner(cachedItem.id)
             )
             result.add(dataRepo)
-            Log.e(
-                "Github Cache Impl",
-                "Github Cache Impl - Add repo - ${dataRepo.owner?.login} from cachedId - ${cachedItem.id}"
-            )
         }
         return result
     }
